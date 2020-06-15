@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @reservation.user.name %>
+</p>
+
+<p>
+  <strong>Start:</strong>
+  <%= printTime(@reservation.start) %>
+</p>
+
+<p>
+  <strong>End:</strong>
+  <%= printTime(@reservation.end) %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= printDate(@reservation.date) %>
+</p>
+
+<%= link_to 'Back', reservations_path %>

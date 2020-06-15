@@ -1,0 +1,43 @@
+<h1>Reservations</h1>
+
+<h1><%= printTime(Time.zone.now) %></h1>
+<h1><%= printDate(Time.zone.now) %></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Start</th>
+      <th>Available</th>
+      <th>User</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @info.each do |time_slot, available, reservation| %>
+      <tr>
+        <td><%= printTime(time_slot) %></td>
+        <td><%= available %></td>
+        <% if !available %>
+          <td><%= reservation.user.name %></td>
+        <% else %>
+          <td></td>
+        <% end %>
+        <% if available %>
+          <%= form_with(model: Reservation.new, local: true) do |form| %>
+            <%= form.hidden_field :start, value: time_slot %>
+            <td><%= form.submit 'Reserve'%></td>
+          <% end %>
+        <% elsif author_of(reservation) %>
+          <td><%= link_to 'Cancel', reservation, method: :delete, data: { confirm: 'Are you sure you want to cancel your reservation?' } %></td>
+        <% else %>
+          <td><%= link_to 'Show', reservation %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+
+  
+</table>
+
+<br>
