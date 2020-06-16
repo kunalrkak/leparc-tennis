@@ -12,6 +12,10 @@ module ApplicationHelper
         time.strftime("%I:%M %p")
     end
 
+    def printTimeIndex(time)
+        time.strftime("%l %p")
+    end
+
     def printDate(date)
         date.strftime("%A, %B #{date.day.ordinalize}, %Y")
     end

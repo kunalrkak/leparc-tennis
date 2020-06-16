@@ -1,8 +1,9 @@
 class ReservationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_reservation_public, only: [:show]
-  before_action :set_reservation, only: [:edit, :update, :destroy]
-  before_action :validate_params, only: [:create, :update]
+  before_action :set_reservation, only: [:destroy]
+  before_action :validate_params, only: [:create]
+  before_action :validate_user_has_no_reservation_today, only: [:create]
 
   # GET /reservations
   # GET /reservations.json
@@ -23,8 +24,8 @@ class ReservationsController < ApplicationController
   end
 
   # GET /reservations/1/edit
-  def edit
-  end
+  # def edit
+  # end
 
   # POST /reservations
   # POST /reservations.json
@@ -48,18 +49,18 @@ class ReservationsController < ApplicationController
 
   # PATCH/PUT /reservations/1
   # PATCH/PUT /reservations/1.json
-  def update
-    @reservation.end = get_end(params)
-    respond_to do |format|
-      if @reservation.update(reservation_params)
-        format.html { redirect_to @reservation, notice: 'Reservation was successfully updated.' }
-        format.json { render :show, status: :ok, location: @reservation }
-      else
-        format.html { render :edit }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  # def update
+  #   @reservation.end = get_end(params)
+  #   respond_to do |format|
+  #     if @reservation.update(reservation_params)
+  #       format.html { redirect_to @reservation, notice: 'Reservation was successfully updated.' }
+  #       format.json { render :show, status: :ok, location: @reservation }
+  #     else
+  #       format.html { render :edit }
+  #       format.json { render json: @reservation.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
 
   # DELETE /reservations/1
   # DELETE /reservations/1.json
@@ -102,8 +103,17 @@ class ReservationsController < ApplicationController
       start = Time.parse(params[:reservation][:start])
       hour = start.hour
       minute = start.min
-      if hour < 8 || hour > 21 || minute != 0
+      second = start.sec
+      existing_res = Reservation.where("date = ?", Date.current).where("start = ?", start).first
+      if hour < 8 || hour > 20 || minute != 0 || second != 0 || existing_res
         redirect_to reservations_url, alert: "Invalid request."
+      end
+    end
+
+    def validate_user_has_no_reservation_today
+      reservation = Reservation.where("date = ?", Date.current).where('user_id = ?', current_user.id).first
+      if reservation != nil
+        redirect_to reservations_url, alert: "Sorry, you can only make one reservation per day."
       end
     end
 
@@ -139,9 +149,12 @@ class ReservationsController < ApplicationController
       
       reservations.each do |reservation|
         i = times.find_index(reservation.start)
-        available[i] = false
-        res_zip[i] = reservation
+        if i != nil
+          available[i] = false
+          res_zip[i] = reservation
+        end
       end
+
       return times.zip(available, res_zip)
     end
 end

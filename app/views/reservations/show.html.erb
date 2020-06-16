@@ -1,23 +1,30 @@
-<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>User:</strong>
-  <%= @reservation.user.name %>
-</p>
+<div class="max-w-lg m-auto px-4">
+  <div class="p-10 mt-20 bg-white border border-grey-light rounded">
 
-<p>
-  <strong>Start:</strong>
-  <%= printTime(@reservation.start) %>
-</p>
+    <h1 class="text-2xl mt-0 mb-6">Reservation</h1>
+    <p class="text-md text-grey-darker mb-2"><strong>Reservation for: </strong><%= @reservation.user.name %></p>
 
-<p>
-  <strong>End:</strong>
-  <%= printTime(@reservation.end) %>
-</p>
+    <p class="text-md text-grey-darker mb-6">
+      <strong>Address:</strong>
+      <%= @reservation.user.house_number %> <%= @reservation.user.street %>
+    </p>
 
-<p>
-  <strong>Date:</strong>
-  <%= printDate(@reservation.date) %>
-</p>
+    <p class="text-md text-grey-darker mb-2">
+      <strong>Date:</strong>
+      <%= printDate(@reservation.date) %>
+    </p>
 
-<%= link_to 'Back', reservations_path %>
+    <p class="text-md text-grey-darker mb-2">
+      <strong>Start:</strong>
+      <%= printTime(@reservation.start) %>
+    </p>
+
+    <p class="text-md text-grey-darker mb-3">
+      <strong>End:</strong>
+      <%= printTime(@reservation.end) %>
+    </p>
+
+    <%= link_to 'Back', reservations_path %> 
+  </div>
+</div>
