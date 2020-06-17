@@ -7,8 +7,8 @@ Rails.application.routes.draw do
       mount Sidekiq::Web => '/sidekiq'
     end
 
-
   devise_for :users, :controllers => { registrations: 'users/registrations' }
+  get 'users/all', to: 'users#all'
   root to: 'home#index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

@@ -64,7 +64,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   def is_address_taken(house, street)
-    if house == 13 || house > 24
+    if house == 13 || house > 24 || house < 1
       return true
     end
       return User.where('house_number = ?', house).where('street = ?', street).all.count > 0

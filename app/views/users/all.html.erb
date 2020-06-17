@@ -1,0 +1,41 @@
+<div class="max-w-7xl m-auto px-4">
+    <h1 class="text-2xl mt-0 mb-0">Users</h1>
+
+  <div class="sm:p-0 md:p-10 mt-5 bg-white border border-grey-light rounded">
+
+    <table style="width: 100%; margin-left: auto; margin-right: auto;">
+      <thead>
+        <tr>
+          <th class="text-md m-auto">Name</th>
+          <th class="text-md m-auto">Email</th>
+          <th class="text-md m-auto">House Number</th>
+          <th class="text-md m-auto">Street</th>
+          <th class="text-md m-auto">Created</th>
+          <th class="text-md m-auto">Updated</th>
+          <th class="text-md m-auto">Sign-in Count</th>
+          <th class="text-md m-auto">Last sign-in</th>
+          <th class="text-md m-auto">IP</th>
+          <th class="text-md m-auto">Admin</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @users.each do |user| %>
+          <tr class="even:bg-white odd:bg-gray-100">
+            <td><%=user.name%></td>
+            <td><%=user.email%></td>
+            <td><%=user.house_number%></td>
+            <td><%=user.street%></td>
+            <td><%=printDateShort(user.created_at)%></td>
+            <td><%=printDateShort(user.updated_at)%></td>
+            <td><%=user.sign_in_count%></td>
+            <td><%=printDateTimeShort(user.last_sign_in_at)%></td>
+            <td><%=user.last_sign_in_ip%></td>
+            <td><%=user.admin%></td>
+          </tr>
+        <% end %>
+      </tbody>
+
+    </table>
+  </div>
+</div>
