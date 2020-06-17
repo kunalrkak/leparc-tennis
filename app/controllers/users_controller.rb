@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     end
 
     def is_admin?
-        redirect_to root_path unless User.find(current_user.id).admin 
+        raise ActionController::RoutingError.new('Not Found') unless User.find(current_user.id).admin 
     end
   end
   
