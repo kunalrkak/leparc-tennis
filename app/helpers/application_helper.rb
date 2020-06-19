@@ -28,6 +28,10 @@ module ApplicationHelper
         date.strftime("%D %R")
     end
 
+    def get_form_id(date)
+        date.strftime("%k")
+    end
+
     def street_options
         ['Almond Cir.', 'Almond Ct.', 'Chestnut Ct.', 'Eastern Cir.', 'Eastern Dr.', 'Elm Ct.', 
         'Hickory Ct.', 'Le Parc Ct.', 'Le Parc Dr.', 'Poplar Ct.', 'Redwood Ct.', 'Walnut Ct.']

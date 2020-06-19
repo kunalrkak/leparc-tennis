@@ -4,13 +4,11 @@ class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:destroy]
   before_action :validate_params, only: [:create]
   before_action :validate_user_has_no_reservation_today, only: [:create]
+  before_action :set_info, only: [:index]
 
   # GET /reservations
   # GET /reservations.json
   def index
-    print(getReservationsToday)
-    @reservations = getReservationsToday
-    @info = getAvailableTimes
   end
 
   # GET /reservations/1
@@ -19,9 +17,9 @@ class ReservationsController < ApplicationController
   end
 
   # GET /reservations/new
-  def new
-    @reservation = Reservation.new
-  end
+  # def new
+  #   @reservation = Reservation.new
+  # end
 
   # GET /reservations/1/edit
   # def edit
@@ -94,13 +92,17 @@ class ReservationsController < ApplicationController
         redirect_to reservations_url
     end
 
+    def set_info
+      @info = getAvailableTimes
+    end
+
     # Only allow a list of trusted parameters through.
     def reservation_params
-      params.require(:reservation).permit(:start)
+      params.permit(:start)
     end
 
     def validate_params
-      start = Time.parse(params[:reservation][:start])
+      start = Time.parse(params[:start])
       hour = start.hour
       minute = start.min
       second = start.sec
@@ -118,7 +120,7 @@ class ReservationsController < ApplicationController
     end
 
     def get_end(params)
-      start = Time.parse(params[:reservation][:start])
+      start = Time.parse(params[:start])
       (start + 59.minutes).end_of_minute
     end
 

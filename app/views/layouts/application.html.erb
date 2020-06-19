@@ -29,11 +29,11 @@
   <% end %>
 
     <header class="mb-4">
-      <nav class="flex text-left items-center justify-between flex-wrap bg-gray-100 py-3 lg:px-10 px-3 text-gray-700 border-b border-gray-400">
-        <div class="flex items-center flex-no-shrink m-auto md:mr-6">
+      <nav class="flex text-left items-center justify-between flex-wrap bg-gray-100 py-3 px-8 text-gray-700 border-b border-gray-400">
+        <div class="flex items-center flex-no-shrink mr-6">
           <%= link_to "Le Parc Tennis Reservations", root_path, class:"link text-xl tracking-tight font-semibold" %>
         </div>
-        <div class="w-full block md:flex md:flex-row md:flex-1 md:mt-0 text-center md:text-left md:justify-end items-center">
+        <div class="w-full hidden md:block md:flex md:flex-row md:flex-1 md:mt-0 text-center md:text-left md:justify-end items-center">
           <% if user_signed_in? %>
             <%= link_to "Users", users_all_path, class: "block mt-4 md:inline-block md:mt-0 md:mr-4 mb-2 md:mb-0 link" if admin?%>
             <%= link_to "My Reservation", reservations_me_path, class: "block mt-4 md:inline-block md:mt-0 md:mr-4 mb-2 md:mb-0 link" %>

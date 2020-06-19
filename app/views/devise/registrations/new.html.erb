@@ -46,6 +46,12 @@
 
   <% end %>
 
+  <div class="text-md text-blue-700 block md:hidden">
+    <hr class="border mt-12" />
+
+    <%= link_to "Sign in", new_user_session_path, class: "block py-2 mt-2 mb-0" %>
+  </div>
+
 <% end %>
 
 <%= render "devise/shared/form_wrap" %>
