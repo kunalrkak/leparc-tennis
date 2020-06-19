@@ -1,4 +1,1 @@
-web: rails server
-sidekiq: sidekiq
-webpack: bin/webpack-dev-server
-redis: redis-server
+web: bundle exec puma -C config/puma.rb
