@@ -8,6 +8,7 @@
       <%= link_to "My Reservation", reservations_me_path %> |
       <%= link_to "Profile", edit_user_registration_path %> | 
       <%= link_to "Log out", destroy_user_session_path, method: :delete %>
+      <br>
     </div>
 
   <div class="sm:p-0 md:p-10 mt-5 bg-white border border-grey-light rounded">
@@ -58,6 +59,7 @@
 
     </table>
   </div>
-
-    <br>
+  <div class="block md:hidden mt-4">
+    <p class="text-xs text-gray-500">For a better user experience, we reccommend viewing this website on a larger screen.</p>
+  </div>
 </div>
