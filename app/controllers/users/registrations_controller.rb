@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-  before_action :configure_sign_up_params, only: [:create]
+  before_action :configure_sign_up_params, only: [:create, :update]
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
@@ -10,12 +10,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  def create
-    if is_address_taken(params[:user][:house_number].to_i, params[:user][:street])
-      redirect_to new_user_session_url, alert: "Address already in use, contact kunalrkak@gmail.com if you think this is an error." and return
-    end
-    super
-  end
+  # def create
+  #   super
+  # end
 
   # GET /resource/edit
   # def edit
@@ -62,11 +59,4 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
-
-  def is_address_taken(house, street)
-    if house == 13 || house > 24 || house < 1
-      return true
-    end
-      return User.where('house_number = ?', house).where('street = ?', street).all.count > 0
-  end
 end
