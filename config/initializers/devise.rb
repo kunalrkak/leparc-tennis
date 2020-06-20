@@ -129,10 +129,10 @@ Devise.setup do |config|
   # config.pepper = '354e77ad7379bd3cf1553b7df8017f01f66c94a2043700f706e726d153ad63f5e98bd1479086d9b30168252cca914257fdc62e0033a4f2a6c99f431f676aedf1'
 
   # Send a notification to the original email when the user's email is changed.
-  # config.send_email_changed_notification = false
+  config.send_email_changed_notification = true
 
   # Send a notification email when the user's password is changed.
-  # config.send_password_change_notification = false
+  config.send_password_change_notification = true
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
@@ -183,7 +183,7 @@ Devise.setup do |config|
   # Email regex used to validate email formats. It simply asserts that
   # one (and only one) @ exists in the given string. This is mainly
   # to give user feedback and not to assert the e-mail validity.
-  config.email_regexp = /\A[^@\s]+@[^@\s]+\z/
+  config.email_regexp = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
