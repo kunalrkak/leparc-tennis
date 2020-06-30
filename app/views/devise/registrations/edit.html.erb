@@ -45,6 +45,14 @@
     </div>
     <% end %>
 
+    <div class="block md:hidden"/>
+      <hr class="border mt-6" />
+
+      <div class="text-md text-blue-700">
+        <%= link_to 'Back', reservations_path, class: "block py-2 mt-2 mb-0"%> 
+      </div>
+    </div>
+
 <% end %>
 
 <%= render 'devise/shared/form_wrap' %>
