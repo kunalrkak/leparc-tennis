@@ -8,6 +8,14 @@ module ApplicationHelper
         user_signed_in? && current_user.admin?
     end
 
+    def thirtyPast(time, record)
+        return time > (record.start + 30.minutes)
+    end
+
+    def tenPast(time, start)
+        return time > (start + 10.minutes)
+    end
+
     def printTime(time)
         time.strftime("%I:%M %p")
     end
