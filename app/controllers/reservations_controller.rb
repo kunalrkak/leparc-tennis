@@ -5,6 +5,8 @@ class ReservationsController < ApplicationController
   before_action :validate_params, only: [:create]
   before_action :validate_user_has_no_reservation_today, only: [:create]
   before_action :set_info, only: [:index]
+  before_action :validate_reservation_can_be_cancelled, only: [:destroy]
+  before_action :validate_reservation_is_not_old, only: [:create]
 
   # GET /reservations
   # GET /reservations.json
@@ -119,6 +121,18 @@ class ReservationsController < ApplicationController
       end
     end
 
+    def validate_reservation_can_be_cancelled
+      if isPastNow(@reservation.start, 30)
+        redirect_to reservations_url, alert: "Sorry, you can't cancel an old reservation."
+      end
+    end
+
+    def validate_reservation_is_not_old
+      if isPastNow(Time.parse(params[:start]), 10)
+        redirect_to reservations_url, alert: "Sorry, you can't reserve an old timeslot."
+      end
+    end
+
     def get_end(params)
       start = Time.parse(params[:start])
       (start + 59.minutes).end_of_minute
@@ -158,5 +172,9 @@ class ReservationsController < ApplicationController
       end
 
       return times.zip(available, res_zip)
+    end
+
+    def isPastNow(time, m)
+      Time.zone.now.change(:month => 1, :day => 1, :year => 2000) > (time + m.minutes)
     end
 end
