@@ -9,11 +9,11 @@ module ApplicationHelper
     end
 
     def thirtyPast(time, record)
-        return time > (record.start + 30.minutes)
+        return time.change(:month => 1, :day => 1, :year => 2000) > (record.start + 30.minutes)
     end
 
     def tenPast(time, start)
-        return time > (start + 10.minutes)
+        return time.change(:month => 1, :day => 1, :year => 2000) > (start + 10.minutes)
     end
 
     def printTime(time)
