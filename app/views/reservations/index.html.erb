@@ -26,7 +26,7 @@
       <tbody>
         <% @info.each do |time_slot, available, reservation| %>
           <tr class="even:bg-white odd:bg-gray-100">
-            <td class="text-sm m-auto text-left pl-2 md:pl-8"><%= printTimeIndex(time_slot) %></td>
+            <td class="text-sm m-auto text-left pl-3 md:pl-8"><%= printTimeIndex(time_slot) %></td>
             <% if !available %>
               <% if author_of(reservation) %>
                 <td class="text-sm text-center m-auto"><%= reservation.user.name %></td>
