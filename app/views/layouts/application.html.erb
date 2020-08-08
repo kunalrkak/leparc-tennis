@@ -35,10 +35,13 @@
         </div>
         <div class="w-full hidden md:block md:flex md:flex-row md:flex-1 md:mt-0 text-center md:text-left md:justify-end items-center">
           <% if user_signed_in? %>
+          <% if false %>
+          <%# TODO: REMOVE NOTICE %>
             <%= link_to "Users", users_all_path, class: "block mt-4 md:inline-block md:mt-0 md:mr-4 mb-2 md:mb-0 link" if admin?%>
             <%= link_to "My Reservation", reservations_me_path, class: "block mt-4 md:inline-block md:mt-0 md:mr-4 mb-2 md:mb-0 link" %>
             <%= link_to "Update Profile", edit_user_registration_path, class: "block mt-4 md:inline-block md:mt-0 md:mr-4 mb-2 md:mb-0 link" %>
             <%= link_to "Guidelines", home_guidelines_path, class: "block mt-4 md:inline-block md:mt-0 md:mr-4 mb-2 md:mb-0 link" %>
+          <% end %>
             <%= link_to "Log out", destroy_user_session_path, method: :delete, class:"btn btn-default mb-2 md:mr-2 md:mb-0 block" %>
           <% else %>
             <%= link_to "Login", new_user_session_path, class:"btn btn-default mb-2 md:mr-2 md:mb-0 block" %>
