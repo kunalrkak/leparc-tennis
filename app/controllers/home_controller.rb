@@ -3,9 +3,7 @@ class HomeController < ApplicationController
 
   def index
     if user_signed_in?
-      # TODO: REMOVE NOTICE
-      # redirect_to reservations_url
-      redirect_to home_notice_url
+      redirect_to reservations_url
     else 
       redirect_to new_user_session_url
     end
