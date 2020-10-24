@@ -196,7 +196,7 @@ class ReservationsController < ApplicationController
     end
 
     def isPastNow(date, time, m)
-      if (Date.current == date)
+      if Date.current == date
         return Time.zone.now.change(:month => 1, :day => 1, :year => 2000) > (time + m.minutes)
       end
       return false
