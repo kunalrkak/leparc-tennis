@@ -32,6 +32,10 @@ module ApplicationHelper
         date.strftime("%D")
     end
 
+    def printDateShorter(date)
+        date.strftime("%_m/%d")
+    end
+
     def printDateIndex(date)
         date.strftime("%A, %B #{date.day.ordinalize}")
     end

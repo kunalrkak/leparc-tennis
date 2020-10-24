@@ -3,7 +3,7 @@ class ReservationsController < ApplicationController
   before_action :set_reservation_public, only: [:show]
   before_action :set_reservation, only: [:destroy]
   before_action :validate_params, only: [:create]
-  before_action :validate_user_has_no_reservation_today, only: [:create]
+  before_action :validate_user_has_no_reservation_today_or_tomorrow, only: [:create]
   before_action :set_info, only: [:index]
   before_action :validate_reservation_can_be_cancelled, only: [:destroy]
   before_action :validate_reservation_is_not_old, only: [:create]
@@ -32,7 +32,6 @@ class ReservationsController < ApplicationController
   def create
     @reservation = Reservation.new(reservation_params)
     @reservation.user_id = current_user.id
-    @reservation.date = Date.current
     @reservation.duration = 60
     @reservation.end = get_end(params)
 
@@ -75,7 +74,10 @@ class ReservationsController < ApplicationController
   def me 
     @reservation = Reservation.where("date = ?", Date.current).where('user_id = ?', current_user.id).first
     if @reservation == nil
-      redirect_to reservations_url, alert: 'Uh-oh, looks like you haven\'t made a reservation yet today!', status: 301, 'data-turbolinks': false
+      @reservation = Reservation.where("date = ?", Date.current + 1.day).where('user_id = ?', current_user.id).first
+      if @reservation == nil
+        redirect_to reservations_url, alert: 'Uh-oh, looks like you don\'t have any upcoming reservations!', status: 301, 'data-turbolinks': false
+      end
     end
   end
 
@@ -100,35 +102,37 @@ class ReservationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def reservation_params
-      params.permit(:start)
+      params.permit(:start, :date)
     end
 
     def validate_params
+      date = Date.parse(params[:date])
       start = Time.parse(params[:start])
       hour = start.hour
       minute = start.min
       second = start.sec
       existing_res = Reservation.where("date = ?", Date.current).where("start = ?", start).first
-      if hour < 8 || hour > 20 || minute != 0 || second != 0 || existing_res
+      if hour < 8 || hour > 20 || minute != 0 || second != 0 || existing_res || date < Date.current || date > Date.current + 1.day
         redirect_to reservations_url, alert: "Invalid request."
       end
     end
 
-    def validate_user_has_no_reservation_today
+    def validate_user_has_no_reservation_today_or_tomorrow
       reservation = Reservation.where("date = ?", Date.current).where('user_id = ?', current_user.id).first
-      if reservation != nil
-        redirect_to reservations_url, alert: "Sorry, you can only make one reservation per day."
+      reservation_tomorrow = Reservation.where("date = ?", Date.current + 1.day).where('user_id = ?', current_user.id).first
+      if reservation != nil || reservation_tomorrow != nil
+        redirect_to reservations_url, alert: "Sorry, you can only hold one reservation within the two day period."
       end
     end
 
     def validate_reservation_can_be_cancelled
-      if isPastNow(@reservation.start, 30)
+      if isPastNow(@reservation.date, @reservation.start, 30)
         redirect_to reservations_url, alert: "Sorry, you can't cancel an old reservation."
       end
     end
 
     def validate_reservation_is_not_old
-      if isPastNow(Time.parse(params[:start]), 10)
+      if isPastNow(Date.parse(params[:date]), Time.parse(params[:start]), 10)
         redirect_to reservations_url, alert: "Sorry, you can't reserve an old timeslot."
       end
     end
@@ -140,6 +144,10 @@ class ReservationsController < ApplicationController
 
     def getReservationsToday
       Reservation.where("date = ?", Date.current).all
+    end
+
+    def getReservationsTomorrow
+      Reservation.where("date = ?", Date.current + 1.day).all
     end
 
     def getAllTimes
@@ -157,11 +165,16 @@ class ReservationsController < ApplicationController
 
     def getAvailableTimes
       reservations = getReservationsToday
+      tomorrow = getReservationsTomorrow
+
       times = getAllTimes
       num_slots = times.length
 
       available = [true] * num_slots
       res_zip = [nil] * num_slots
+
+      available_tomorrow = [true] * num_slots
+      res_zip_tomorrow = [nil] * num_slots
       
       reservations.each do |reservation|
         i = times.find_index(reservation.start)
@@ -171,10 +184,21 @@ class ReservationsController < ApplicationController
         end
       end
 
-      return times.zip(available, res_zip)
+      tomorrow.each do |reservation|
+        i = times.find_index(reservation.start)
+        if i != nil
+          available_tomorrow[i] = false
+          res_zip_tomorrow[i] = reservation
+        end
+      end
+
+      return times.zip(available, res_zip, available_tomorrow, res_zip_tomorrow)
     end
 
-    def isPastNow(time, m)
-      Time.zone.now.change(:month => 1, :day => 1, :year => 2000) > (time + m.minutes)
+    def isPastNow(date, time, m)
+      if (Date.current == date)
+        return Time.zone.now.change(:month => 1, :day => 1, :year => 2000) > (time + m.minutes)
+      end
+      return false
     end
 end
