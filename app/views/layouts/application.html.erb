@@ -33,6 +33,18 @@
         <div class="flex items-center flex-no-shrink mr-6">
           <%= link_to "Le Parc Tennis Reservations", root_path, class:"link text-xl tracking-tight font-semibold" %>
         </div>
+        <div class="w-full hidden md:hidden sm:block sm:flex sm:flex-row sm:flex-1 sm:mt-0 text-center sm:text-left sm:justify-end items-center">
+        <% if user_signed_in? %>
+          <%= link_to "Users", users_all_path, class: "block mt-4 sm:inline-block sm:mt-0 sm:mr-4 mb-2 sm:mb-0 link" if admin?%>
+          <%= link_to "Reservation", reservations_me_path, class: "block mt-4 sm:inline-block sm:mt-0 sm:mr-4 mb-2 sm:mb-0 link" %>
+          <%= link_to "Update ", edit_user_registration_path, class: "block mt-4 sm:inline-block sm:mt-0 sm:mr-4 mb-2 sm:mb-0 link" %>
+          <%= link_to "Guidelines", home_guidelines_path, class: "block mt-4 sm:inline-block sm:mt-0 sm:mr-4 mb-2 sm:mb-0 link" %>
+          <%= link_to "Logout", destroy_user_session_path, method: :delete, class:"btn btn-default mb-2 sm:mr-2 sm:mb-0 block" %>
+        <% else %>
+          <%= link_to "Login", new_user_session_path, class:"btn btn-default mb-2 sm:mr-2 sm:mb-0 block" %>
+          <%= link_to "Sign Up", new_user_registration_path, class:"btn btn-default block" %>
+        <% end %>
+      </div>
         <div class="w-full hidden md:block md:flex md:flex-row md:flex-1 md:mt-0 text-center md:text-left md:justify-end items-center">
           <% if user_signed_in? %>
             <%= link_to "Users", users_all_path, class: "block mt-4 md:inline-block md:mt-0 md:mr-4 mb-2 md:mb-0 link" if admin?%>

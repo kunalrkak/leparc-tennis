@@ -1,25 +1,29 @@
 <div class="max-w-5xl m-auto px-4">
     <h1 class="text-2xl mt-0 mb-0">Reservations Schedule</h1>
-    <div class="hidden md:block">
+    <div class="hidden sm:block">
       <h1 class="text-xl mt-0 mb-0">For <%= printDateIndex(Time.zone.now) %> and <%= printDateIndex(Time.zone.now + 1.day) %></h1>
     </div>
-    <div class="block md:hidden">
+    <div class="block sm:hidden">
       <h1 class="text-xl mt-0 mb-0">For <%= printDateShort(Time.zone.now) %> and <%= printDateShort(Time.zone.now + 1.day) %></h1>
     </div>
     <p class="text-sm text-grey-darker mb-2">
       This page was last updated at <%= printTime(Time.zone.now) %>
     </p>
 
-    <div class="block md:hidden text-md text-blue-700">
+    <div class="block sm:hidden text-md text-blue-700">
       <%= link_to "My Reservation", reservations_me_path %> |
       <%= link_to "Profile", edit_user_registration_path %> | 
       <%= link_to "Log out", destroy_user_session_path, method: :delete %>
       <br>
     </div>
 
-  <div class="sm:p-0 pt-2 md:p-10 mt-5 md:mb-5 bg-white border border-grey-light rounded">
+    <div class="block sm:hidden">
+      <p class="text-xs text-gray-500">For a better user experience, we reccommend rotating your phone to landscape or viewing this website on a larger screen.</p>
+    </div>
 
-    <div class="hidden md:block">
+  <div class="sm:p-0 pt-2 sm:p-8 mt-5 sm:mb-5 bg-white border border-grey-light rounded">
+
+    <div class="hidden sm:block">
     <table style="width: 95%; margin-left: auto; margin-right: auto;" class="mb-3">
       <thead>
         <tr>
@@ -34,7 +38,7 @@
       <tbody>
         <% @info.each do |time_slot, available, reservation, a_tomorrow, res_tomorrow| %>
           <tr class="even:bg-white odd:bg-gray-100">
-            <td class="text-sm m-auto text-left pl-3 md:pl-8"><%= printTimeIndex(time_slot) %></td>
+            <td class="text-sm m-auto text-left pl-8"><%= printTimeIndex(time_slot) %></td>
 
             <% if !available %>
               <td class="text-sm text-center m-auto"><%= reservation.user.name %></td>
@@ -107,7 +111,7 @@
     </table>
     </div>
 
-    <div class="block md:hidden">
+    <div class="block sm:hidden">
     <table style="width: 95%; margin-left: auto; margin-right: auto;" class="mb-3">
       <thead>
         <tr>
@@ -120,7 +124,7 @@
       <tbody>
         <% @info.each do |time_slot, available, reservation, a_tomorrow, res_tomorrow| %>
           <tr class="even:bg-white odd:bg-gray-100">
-            <td class="text-sm m-auto text-left pl-8 md:pl-8"><%= printTimeIndex(time_slot) %></td>
+            <td class="text-sm m-auto text-left pl-8"><%= printTimeIndex(time_slot) %></td>
 
             <% if available %>
               <td class="text-center m-auto text-right pr-2">
@@ -182,10 +186,8 @@
     </div>
   </div>
 
-  <div class="block md:hidden text-xs text-blue-700 mt-4">
+  <div class="block sm:hidden text-xs text-blue-700 mt-4 mb-4">
     <%= link_to "Guidelines", home_guidelines_path %>
   </div>
-  <div class="block md:hidden">
-    <p class="text-xs text-gray-500">For a better user experience, we reccommend viewing this website on a larger screen.</p>
-  </div>
+
 </div>
