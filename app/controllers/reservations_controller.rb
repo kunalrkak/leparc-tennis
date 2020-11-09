@@ -111,8 +111,8 @@ class ReservationsController < ApplicationController
       hour = start.hour
       minute = start.min
       second = start.sec
-      existing_res = Reservation.where("date = ?", Date.current).where("start = ?", start).first
-      if hour < 8 || hour > 20 || minute != 0 || second != 0 || date < Date.current || date > Date.current + 1.day
+      existing_res = Reservation.where("date = ?", date).where("start = ?", start).first
+      if hour < 8 || hour > 20 || minute != 0 || second != 0 || date < Date.current || date > Date.current + 1.day || existing_res
         redirect_to reservations_url, alert: "Invalid request."
       end
     end
