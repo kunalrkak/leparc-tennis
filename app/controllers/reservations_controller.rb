@@ -126,8 +126,11 @@ class ReservationsController < ApplicationController
     end
 
     def validate_reservation_can_be_cancelled
-      if isPastNow(@reservation.date, @reservation.start, 30)
-        redirect_to reservations_url, alert: "Sorry, you can't cancel an old reservation."
+      # Changing this to have different messages for a reservation that has begun and one that is in 10 mins
+      if isPastNow(@reservation.date, @reservation.start, 0)
+        redirect_to reservations_url, alert: "Sorry, you can't cancel a reservation after it has begun."
+      elsif isPastNow(@reservation.date, @reservation.start, -10)
+        redirect_to reservations_url, alert: "Sorry, we've disallowed cancellations 10 minutes before start time."
       end
     end
 

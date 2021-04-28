@@ -16,6 +16,14 @@ module ApplicationHelper
         return time.change(:month => 1, :day => 1, :year => 2000) > (start + 10.minutes)
     end
 
+    def tenBefore(time, record)
+        return time.change(:month => 1, :day => 1, :year => 2000) > (record.start - 10.minutes)
+    end
+
+    def lessThanTenToStart(time, start)
+        return time.change(:month => 1, :day => 1, :year => 2000) > (start - 10.minutes)
+    end
+
     def printTime(time)
         time.strftime("%I:%M %p")
     end
